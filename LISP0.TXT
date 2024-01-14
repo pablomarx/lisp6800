@@ -64,7 +64,7 @@ START  EQU *
        LDAA ENDMEM           * SET UP HIGH BYTE OF XTMP
        STAA XTMP
        LDAA #$40             * INITIALIZE TABLES TO 40'S
-LDAB   #192
+       LDAB #192
 NUMILP EQU *
        STAA 0,X
        INX
@@ -78,7 +78,7 @@ NUM64I EQU *
        STAA 0,X
        INX
        ASLA
-ADDA   #2
+       ADDA #2
        DAA
        BCC NUM64I
 * SET UP 128-BYTE TABLE
@@ -87,7 +87,7 @@ ADDA   #2
        LDX XTMP
        LDAA #$40
 NM128I EQU *
-LDAB   #5                    * INNER COUNTER
+       LDAB   #5             * INNER COUNTER
 N128I2 EQU *
        STAA 0,X
        INX
@@ -97,7 +97,7 @@ N128I2 EQU *
        INX                   * SKIP 3 BYTES
        INX
        INX
-CMPA   #50+$40               * ALL DONE?
+       CMPA #50+$40          * ALL DONE?
        BNE NM128I
 * YEP, TABLES NOW SET UP
        CLRA
@@ -146,13 +146,13 @@ ERRBR2 EQU *
 ERRBR3 LDAA RSTFLG           * RESET OR RETBRK?
        BEQ ERRLUP
 ERRSET LDX EOIATM            * YEP, RESULT IS NOTHING
-ADDA   #'0                   * AT THIS LEVEL?
-CMPA   EFLAG
+       ADDA #'0              * AT THIS LEVEL?
+       CMPA EFLAG
        BLO ERRETN            * NOPE, KEEP RESETTING
        CLR RSTFLG            * YEP, CLEAR RESET FLAG
 ERRLUP LDX #EFLAG            * ERROR PROMPT (E.G. "2:> ")
        LDAA 0,X              * FIRST LEVEL?
-CMPA   #'1
+       CMPA #'1
        BNE ERRLP2
        INX                   * YEP, SKIP PAST DIGIT
 ERRLP2 JSR PSTRNG

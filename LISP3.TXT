@@ -60,18 +60,18 @@ PRINR  RMB 3
        ORG OBEGAD
 STKFRG STS XTMP2                * CHECK LOW BYTE OF SP FOR MIN. STACKLIM
        LDAA XTMP2+1
-CMPA   #STKMIN
+       CMPA #STKMIN
        BLS STKF2
        RTS                      * ENOUGH ROOM, JUST RETURN
 *
 STKF2  STX XTMP2                * SAVE X-REG FOR RESTORE LATER
        LDAA ENDPTR
-LDAB   ENDPTR+1                 * ADJUST ENDPTR TO 256-BYTE BOUNDARY
+       LDAB ENDPTR+1            * ADJUST ENDPTR TO 256-BYTE BOUNDARY
        BEQ STKF4
        BSR BLKFRE               * FREE UP BLCOK DOWN TO 256-BYTE BOUNDARY
        STX ENDPTR               * UPDATE ENDPTR
 STKF4  DECA                     * ALLOCATE NEW 256-BYTE STACK FRAGMENT
-CMPA   SPCPTR                   * BUMPING INTO NAME SPACE?
+       CMPA SPCPTR              * BUMPING INTO NAME SPACE?
        BLS STKFUL
        STAA ENDPTR              * NOPE, UPDATE ENDPTR
        STAA XTMP
@@ -103,7 +103,7 @@ UNRAVL STX XTMP2                * SAVE X-REG
        LDS 0,X                  * RESTORE OLD SP
        STX XTMP
        LDAA XTMP                * END OF FRAG = ENDPTR?
-CMPA   ENDPTR
+       CMPA ENDPTR
        BNE UNRFRE
        INCA                     * YEP, JUST UPDATE ENDPTR
        STAA ENDPTR              * (BY ADDING 256)
@@ -117,21 +117,21 @@ UNRFRE CLRB
 * AT RETURN, X-REG, A&B-REG, AND XTMP-A-REG POINT TO BOTTOM OF BLOCK
 * XTMP+1 IS UNSPECIFIED ON ENTRY AND RETURN
 BLKFRE STAA XTMP
-SUBB   #4                       * FREE CELLS UTIL DOWN TO 256-BYTE BOUNDARY
-STAB   XTMP+1
+       SUBB #4                  * FREE CELLS UTIL DOWN TO 256-BYTE BOUNDARY
+       STAB XTMP+1
        LDX XTMP
        BRA BLKF2
 BLKF1  STAA CDR,X
-STAB   CDR+1,X
+       STAB CDR+1,X
        LDX CDR,X
 BLKF2  SUBB #4
        BCC BLKF1
-LDAB   FREPTR+1                 * FILL IN LAST CELL
-STAB   CDR+1,X
-LDAB   FREPTR
-STAB   CDR,X
-LDAB   XTMP+1                   * UPDATE FREPTR
-STAB   FREPTR+1
+       LDAB FREPTR+1            * FILL IN LAST CELL
+       STAB CDR+1,X
+       LDAB FREPTR
+       STAB CDR,X
+       LDAB XTMP+1              * UPDATE FREPTR
+       STAB FREPTR+1
        STAA FREPTR
        RTS
 *
@@ -142,13 +142,13 @@ GETCEL LDX FREPTR               * ANY CELLS ON FREE LIST?
 * ABOUT TO BREAK INTO NEW 256-BYTE PAGE
        JSR GCOL
        LDAA GCFREE+1            * A LOT OF CELLS FREED?
-CMPA   #MINFRE
-BHS    GETCEL                   * YEP, LOOP AROUND
+       CMPA #MINFRE
+       BHS GETCEL               * YEP, LOOP AROUND
        LDAA GCFREE
        BNE GETCEL               * (YEP, MORE THAN 256)
        LDAA ENDPTR
        DECA
-CMPA   SPCPTR                   * ABOUT TO RUN OUT OF SPACE?
+       CMPA SPCPTR              * ABOUT TO RUN OUT OF SPACE?
        BLS NOGCEL
        STAA ENDPTR              * NOPE, ALLOCATE NEW DTPR OFF ENDPTR
        LDAA ENDPTR+1
@@ -192,7 +192,7 @@ POPX   LDX STKPTR
        LDAA CDR,X               * UPDATE STKPTR
        STAA STKPTR
        LDAA CDR+1,X
-ANDA   #$FE                     * ENSURE THE LOW BIT IS CLEAR
+       ANDA #$FE                * ENSURE THE LOW BIT IS CLEAR
        STAA STKPTR+1
        BSR FRECEL
        LDX CAR,X                * ASSUME FRECEL DOESN'T TOUCH CAR
@@ -306,10 +306,10 @@ GCTMRK LDAA CAR,X
        STAA GCTEMP
        LDAA CAR+1,X
        STAA GCTEMP+1
-EORA   #MRKBIT                  * USE EOR BECAUSE MAY NOT BE FORM
+       EORA #MRKBIT             * USE EOR BECAUSE MAY NOT BE FORM
        STAA CAR+1,X
        LDAA CDR+1,X
-ORAA   #MRKBIT
+       ORAA #MRKBIT
        STAA CDR+1,X
        RORA                     * SET C-BIT
        LDX CDR,X                * SET UP X-REG, Z & N-BIT
@@ -345,23 +345,23 @@ GCOCD2 ORAA #MRKBIT             * SET CDR MARK
 * ON THE WAY BACK UP, CHECK IF CDR ALREADY TRACE
 GCODUN LDX DADPTR
        BEQ GCTRET               * (ALL DONE)
-LDAB   DADPTR+1                 * TRACING AN ATOM?
+       LDAB DADPTR+1            * TRACING AN ATOM?
        RORB
        BCS GCODAT               * YEP, CLEARLY MUST BE DONE WITH IT
        LDAA CDR+1,X             * CDR MARKED?
-BITA   #MRKBIT
+       BITA #MRKBIT
        BNE GCOCDD
-LDAB   CAR+1,X                  * NOPE, TRACE DOWN CDR
-STAB   CDR+1,X                  * MOVE BACK POINTER
-LDAB   SONPTR+1
-ORAB   #MRKBIT
-STAB   CAR+1,X                  * RESET CAR WITH MARK BIT ON
+       LDAB CAR+1,X             * NOPE, TRACE DOWN CDR
+       STAB CDR+1,X             * MOVE BACK POINTER
+       LDAB SONPTR+1
+       ORAB #MRKBIT
+       STAB CAR+1,X             * RESET CAR WITH MARK BIT ON
        STAA SONPTR+1            * SET NEW SONPTR
        LDAA CDR,X               * NOW THE SAME THING WITH THE HIGH BYTES
-LDAB   CAR,X
-STAB   CDR,X
-LDAB   SONPTR
-STAB   CAR,X
+       LDAB CAR,X
+       STAB CDR,X
+       LDAB SONPTR
+       STAB CAR,X
        STAA SONPTR
 * NOW START WITH A NEW FORM
 GCOCA2 LDX SONPTR
@@ -369,17 +369,17 @@ GCOCA2 LDX SONPTR
 GCOGO  LDAA SONPTR+1            * ATOM?
        RORA
        BCS GCOATM               * (YEP)
-LDAB   CAR+1,X                  * IS DTPR ALREADY MARKED?
-BITB   #MRKBIT
+       LDAB CAR+1,X             * IS DTPR ALREADY MARKED?
+       BITB #MRKBIT
        BNE GCODUN
        LDAA CAR,X               * NOPE, NIL OR NUM?
        BLE GCOCAA
-STAB   SONPTR+1                 * NOPE, TRACE DOWN CAR
+       STAB SONPTR+1            * NOPE, TRACE DOWN CAR
        STAA SONPTR
        LDAA DADPTR
        STAA CAR,X
        LDAA DADPTR+1
-ORAA   #MRKBIT
+       ORAA #MRKBIT
        STAA CAR+1,X
        BRA GCOCA4               * JOIN COMMON CODE
 * CAR IS NIL OR NUM, TRACE DOWN CDR
@@ -387,21 +387,21 @@ GCOCAA LDAA CDR+1,X
        BRA GCOCA3               * (JUST LIKE AN ATOM CELL)
 * FORM IS ATOM
 GCOATM LDAA CDR+1-1,X           * ATOM ALREADY MARKED?
-BITA   #MRKBIT
+       BITA #MRKBIT
        BNE GCODUN
        DEX                      * NOPE, POINT TO START OF CELL
 LDAB   CAR+1,X                  * COMPLEMENT GC BIT OF CAR
 * AT THIS POINT C-BIT SET IF WE HAVE AN ATOM...
 GCOCA3 EORB #MRKBIT
-STAB   CAR+1,X
-LDAB   CDR,X                    * VALUE=NIL OR NUM?
+       STAB CAR+1,X
+       LDAB CDR,X               * VALUE=NIL OR NUM?
        BLE GCOCD2               * YEP, MARK CDR AND PROCEED
        STAA SONPTR+1            * NOPE, TRACE VALUE OF ATOM
-STAB   SONPTR
+       STAB SONPTR
        LDAA DADPTR
        STAA CDR,X
        LDAA DADPTR+1
-ORAA   #MRKBIT
+       ORAA #MRKBIT
        STAA CDR+1,X
        BCC GCOCA4               * DO WE HAVE AN ATOM?
        INX                      * YEP, SET LOW BIT AGAIN

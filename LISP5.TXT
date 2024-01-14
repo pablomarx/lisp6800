@@ -110,7 +110,7 @@ SSETAT JMP SETATM        * ALLOW FOR BSR'S
 SNSINI LDAB #SUBRAT      * INITIALIZE SUBRS
        BSR SUBINI
        INX               * POINT TO NSUBR LIST
-LDAB   #NSUBAT
+       LDAB #NSUBAT
 * AND RETURN THROUGH SUBINI
 * B-REG HOLDS ADDR OF ATOM (IN DIR. PAGE)
 * X-REG POINTS TO LIST OF NAMES
@@ -118,7 +118,7 @@ LDAB   #NSUBAT
 * FUNCTION MUST START WITH FCB '! ; FCB 0
 SUBINI STX SYMPTR
        CLR XTMP
-STAB   XTMP+1
+       STAB XTMP+1
        LDX XTMP          * GET SUBR OR NSUBR ATOM
        LDX 0,X
        STX ALP           * SAVE IT
@@ -136,7 +136,7 @@ SBILP2 INX
        STX SYMPTR        * SAVE FOR LATER
        LDX 0,X           * GET FUNC POINTER
        LDAA 0,X          * CHECK FOR MAGIC BYTES
-CMPA   #'!
+       CMPA #'!
        BNE SBIBAD
        TST 1,X
        BNE SBIBAD
@@ -319,7 +319,7 @@ PATF2  STX FORM          * SAVE FORM
        DEX               * GET PRINT NAME POINTER
        LDX CAR,X
        LDAA 0,X          * IS IT QUOTED?
-CMPA   #'"
+       CMPA #'"
        BEQ PATF3
        LDX FORM          * NOPE, LET PRINT TAKE OVER
        BRA PATF1
@@ -327,7 +327,7 @@ CMPA   #'"
 PATF3  INX
        LDAA 0,X
        BEQ PATFRT        * ALL DONE
-CMPA   #'"               * IS IT A "?
+       CMPA #'"               * IS IT A "?
        BNE PATF4         * NOPE, JUST PRINT IT
        INX               * YEP, ADVANCE TO NEXT CHAR
        LDAA 0,X

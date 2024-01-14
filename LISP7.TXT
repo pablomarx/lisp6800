@@ -77,11 +77,11 @@ ADDFUN FDB MAGWRD
 *
 ADDF2  STX NLP
        LDAA FLP+1            * ADD THEN
-ADDA   NLP+1
+       ADDA NLP+1
        DAA
        STAA FLP+1
        LDAA FLP
-ADCA   NLP
+       ADCA NLP
        DAA
        STAA FLP
        LDX FLP
@@ -215,13 +215,13 @@ NUMINV STX XTMP
        BEQ NMIVRT            * IS IT ZERO, SAVE OUR BREATH
        LDAA #$99             * FIRST GET 9'S COMPLEMENT
        TAB
-SUBB   XTMP
-SUBA   XTMP+1
-ADDA   #1                    * NOW ADD 1 TO GET 10'S COMPLEMENT
+       SUBB XTMP
+       SUBA XTMP+1
+       ADDA #1               * NOW ADD 1 TO GET 10'S COMPLEMENT
        DAA
        STAA XTMP+1
        TBA
-ADCA   #0                    * FIXUP HIGH DIGITS
+       ADCA #0               * FIXUP HIGH DIGITS
        DAA
        STAA XTMP
        LDX XTMP
@@ -273,7 +273,7 @@ BTFUN1 LDX CUREVL            * PRINT OUR CAR'S OF CUREVL LIST
 BTFUN2 JSR GNXTA
        BCS RTNEOI            * RETURN EOI SO NO PRINT OUT
        LDAA FLP+1
-ADDA   #$99                  * SUBTRACT 1 (BCD-WISE)
+       ADDA #$99             * SUBTRACT 1 (BCD-WISE)
        DAA
        STAA FLP+1
        BEQ BTFRTN

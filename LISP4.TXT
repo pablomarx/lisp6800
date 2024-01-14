@@ -127,7 +127,7 @@ EVNSU2 LDX FLP                     * PICK UP THE ADDR
        DEX                         * CONVERT TO CELL POINTER
        LDX CAR,X                   * GET ADDR OF FUNCTION
        LDAA 0,X                    * CHECK MAGIC BYTE
-CMPA   #'!
+       CMPA #'!
        BNE EVLSER
        TST 1,X
        BNE EVLSER
@@ -329,11 +329,11 @@ LSTAD2 JSR GETCEL                  * GET A NEW CELL
        JSR TOPX                    * GET LIST POINTER
        LDAA CELPTR                 * (CELPTR FILLED IN BY GETCEL)
        STAA CDR,X
-LDAB   CELPTR+1
-STAB   CDR+1,X                     * NOW ADDED TO LIST
+       LDAB CELPTR+1
+       STAB CDR+1,X                * NOW ADDED TO LIST
        LDX STKPTR                  * UPDATE LIST POINTER
        STAA CAR,X
-STAB   CAR+1,X
+       STAB CAR+1,X
        RTS
 * FILL IN CDR OF LAST CELL IN LIST
 * ALSO POP OFF LIST POINTER

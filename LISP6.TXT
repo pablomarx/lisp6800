@@ -68,7 +68,7 @@ PTCTTY EQU $AD18        * PUT A CHAR
 * USES SYSTEM INPUT BUFFER
 * FORCES SYSTEM TO IGNORE E.O.COMMAND CHAR
 GTCTTY LDAA DOSPCH      * GET PREV CHAR?
-CMPA   DOSEOC           * IS IT E.O.COMMAND?
+       CMPA DOSEOC      * IS IT E.O.COMMAND?
        BNE GETC2
        INC DOSBPT+1     * YES, INCREMENT POINTER PAST IT
        BNE GETC3
@@ -179,9 +179,9 @@ LDAB   #8               * LIMIT ON FILE NAME
 OPNLP1 LDAA 0,X         * GET NEXT CHAR
        BEQ OPNL1E       * DONE WITH FIRST LOOP
        INX              * ADVANCE POINTER
-CMPA   #'"              * QUOTE?
+       CMPA #'"         * QUOTE?
        BEQ OPNLP1       * YEP, LOOK AT NEXT CHAR
-CMPA   #'.              * DOT?
+       CMPA #'.         * DOT?
        BEQ OPNL1E       * YEP, ALL DONE
        TSTB             * MORE CHARS TO GO?
        BEQ OPNLP1       * NOPE, LOOP AROUND
@@ -203,7 +203,7 @@ OPNL1R LDAB XTMP        * MORE TO DO?
        BRA OPNLP1
 * NOW POP OFF INTO FCB
 OPNL2R LDX FLP          * POINT TO FCB
-LDAB   #11              * CHAR COUNTER
+       LDAB #11         * CHAR COUNTER
 *
 OPNLP2 PULA             * PULL OFF CHAR
        STAA 14,X        * STORE IT
@@ -305,7 +305,7 @@ GNM41  LDAA 0,X
        BRA GNM51        * GO CHECK IF REALLY NEW
 *
 GNM42  INCA
-CMPA   #'Z              * UP TO Z?
+       CMPA #'Z         * UP TO Z?
        BLS GNM5
        LDAA #'A         * YEP, RESET TO AA
        STAA 0,X
@@ -339,7 +339,7 @@ GTCDSK STX XTMP         * SAVE X-REG
        TST 0,X          * OPEN FOR READING?
        BNE GTCDE2       * NOPE, ERROR
        LDAA 2,X
-CMPA   #1
+       CMPA #1
        BNE GTCDE2       * NOPE, ERROR
        JSR DOSFMS       * YEP, GET NEXT CHAR
        BNE GTCDER       * ERROR ON READ
@@ -374,7 +374,7 @@ PTCDSK PSHB             * SAVE B, X-REG
        STX FLP          * SET UP FLP FOR OPNTTY, ETC
        TST 0,X          * OPEN FOR WRITING?
        BNE PTCDE2
-LDAB   2,X
+       LDAB 2,X
 CMPB   #2
        BNE PTCDE2
        BSR CASWIT       * UPPER<-->LOWER CASE

@@ -54,7 +54,7 @@ STREQ  STX STR2
 STE2   STX STP1
        LDAA 0,X
        LDX STP2
-CMPA   0,X
+       CMPA 0,X
        BNE UNEQ
        INX
        TSTA
@@ -64,7 +64,7 @@ CMPA   0,X
        STX STP2
        LDX STP1
        INX
-CMPA   0,X
+       CMPA 0,X
        BNE UNEQ
        INX
        TSTA
@@ -82,9 +82,9 @@ UNEQ   LDAA #1
 * LOOKS ON SYMLIST FOR EXISTING ATOM, ADDS CELL TO SYMLST
 LOOKUP STX NAMPTR
        STX STR1
-LDAB   0,X                      * 1ST CHAR OF NAME SAVED IN B-REG
+       LDAB 0,X                 * 1ST CHAR OF NAME SAVED IN B-REG
        TBA                      * COPY TO A FOR NUM TEST
-CMPA   #'-                      * COULD THIS BE A NUMBER?
+       CMPA #'-                 * COULD THIS BE A NUMBER?
        BNE LKUNM2
        TST 1,X                  * "-" ALL ALONE?
        BEQ LKU1                 * YEP, TREAT LIKE A NON-NUMERIC ATOM
@@ -93,7 +93,7 @@ LKUNUM INX                      * POINT TO NEXT DIG
        BEQ LKUNM3               * YEP, WE HAVE A NUMBER!
 LKUNM2 CMPA #'0
        BLT LKU1                 * (NOT A NUM)
-CMPA   #'9
+       CMPA #'9
        BLE LKUNUM               * KEEP CHECKING
 LKU1   LDX SYMLST               * POINT TO FIRST ATOM
        BEQ EOL                  * (UNLESS LIST EMPTY)
@@ -102,7 +102,7 @@ LKU2   STX LSTPTR
        STX FORM                 * SAVE ADDR
        DEX
        LDX CAR,X                * PICK UP NAME FROM ATOM CELL
-CMPB   0,X                      * QUICK CHECK FOR 1ST CHAR MATCH
+       CMPB 0,X                 * QUICK CHECK FOR 1ST CHAR MATCH
        BNE LKU3
        JSR STREQ
        BEQ LKU4
@@ -132,11 +132,11 @@ EOL    JSR GETCEL
 *
 FNDNUM STX FORM                 * SAVE RETURN FORM
 LKU4   LDAA NAMPTR
-CMPA   BEGPTR                   * (UNLESS NAME IS BUILT-IN)
+       CMPA BEGPTR              * (UNLESS NAME IS BUILT-IN)
        BLO FOUND
        BHI LKU5
        LDAA NAMPTR+1
-CMPA   BEGPTR+1
+       CMPA BEGPTR+1
        BLO FOUND
 LKU5   LDX NAMPTR
        STX SPCPTR
@@ -152,8 +152,8 @@ FND2   RTS
 * HIGH BIT SET AS INDICATOR
 LKUNM3 LDX NAMPTR
        CLRA                     * A AND B WILL BE NUMBER
-SUBB   #'-                      * SAVE STATUS OF '-' FLAG
-STAB   XTMP
+       SUBB #'-                 * SAVE STATUS OF '-' FLAG
+       STAB XTMP
        BEQ LKUNM5               * START WITH INX IF '-' FOUND
        CLRB
 * SHIFT NUMBER LEFT 4
@@ -167,14 +167,14 @@ LKUNM4 CMPA #4                  * OVERFLOW?
        ROLA
        ASLB
        ROLA
-ADDB   0,X                      * ADD IN NEW DIGIT
-SUBB   #'0
+       ADDB 0,X                 * ADD IN NEW DIGIT
+       SUBB #'0
 LKUNM5 INX
        TST 0,X
        BNE LKUNM4               * AND LOOP AROUND UNTIL DONE
 *
 LKUNM6 STAA XTMP2               * STORE THE RESULT
-STAB   XTMP2+1
+       STAB XTMP2+1
        LDX XTMP2
        LDAA XTMP                * NEGATIVE?
        BNE LKUNM7
@@ -194,11 +194,11 @@ NUMOVR LDX NAMPTR               * RESET SPCPTR (ASSUMING NO BUILTIN NUMBERS!!)
 IXLIST STX XTMP                 * SAVE X-REG FOR INDEX CALC
        BSR INLIST               * ON LIST?
        BCC IXL2
-LDAB   #-1                      * NOPE
+       LDAB #-1                 * NOPE
        BRA IXLRT
 IXL2   STX XTMP2                * CALC INDEX
-LDAB   XTMP2+1
-SUBB   XTMP+1
+       LDAB XTMP2+1
+       SUBB XTMP+1
 IXLRT  LDX XTMP
        TSTB
        RTS
@@ -235,19 +235,19 @@ GSNXTC JSR GETC
 GS2    LDX #BRKLST              * IS IT A BREAK CHAR?
        BSR INLIST
        BCC GSBRK
-CMPA   #$20                     * NOPE, IS IT A <SP> OR CIL(??) CHAR?
+       CMPA #$20                * NOPE, IS IT A <SP> OR CIL(??) CHAR?
        BHI GSNSEP
        TSTB                     * YEP, HAVE WE GOT A SYMBOL?
        BNE ENDSYM
        BRA GSNXTC               * NOPE, GO GET NEXT CHAR
 GSBRK  TSTB                     * HAVE WE GOT A SYMBOL?
        BNE ENDSYM
-CMPA   #EOI                     * <EOI> TYPED?
+       CMPA #EOI                * <EOI> TYPED?
        BEQ RETEOI               * YES, RETURN WITH B=0, NO PEEKC, FORM=EOIATM
        BSR COPYC                * NOPE, START WITH A NEW ONE
-CMPA   #'"                      * QUOTED STRING?
+       CMPA #'"                 * QUOTED STRING?
        BEQ GSQSTR               * YES, GO COPY REST OF STRING
-LDAB   #2                       * NOPE, SET BREAK-CHAR CODE
+       LDAB #2                  * NOPE, SET BREAK-CHAR CODE
        ENDNPK CLRA              * END SYM WITH NO PEEKC
        ENDSYM STAA PEEKC        * SAVE PEEKC
        CLRA                     * FINISH UP SYMBOL
@@ -263,7 +263,7 @@ RETEI2 LDX EOIATM               * RETURN WITH EOI ATOM
 * NOT SPECIAL, ASSUME "ALPHANUMERIC"
 GSNSEP TSTB                     * FIRST CHAR?
        BNE GSANCK
-LDAB   #3                       * YES, SET ALPHA-NUMERIC CODE
+       LDAB #3                  * YES, SET ALPHA-NUMERIC CODE
 GSANST BSR COPYC
        BRA GSNXTC               * LOOP FOR NEXT CHAR
 GSANCK CMPB #3                  * NOW ALPHA-NUMERIC?
@@ -273,12 +273,12 @@ GSANCK CMPB #3                  * NOW ALPHA-NUMERIC?
 GSQSTR LDAB #1                  * QUOTED STRING TYPE SYMBOL
 GSQ2   JSR GETC                 * GET NEXT CHAR
        BSR COPYC                * AND SAVE IT
-CMPA   #EOI                     * END OF INPUT?
+       CMPA #EOI                * END OF INPUT?
        BEQ ENDSYM               * YEP, AND SAVE EOI IN PEEKC
-CMPA   #'"                      * CLOSE QUOTE?
+       CMPA #'"                 * CLOSE QUOTE?
        BNE GSQ2
        JSR GETC                 * YEP, CHECK FOR DOUBLE ""
-CMPA   #'"
+       CMPA #'"
        BNE ENDSYM
        BSR COPYC                * YEP, SAVE IT
        BRA GSQ2                 * AND KEEP GOING
