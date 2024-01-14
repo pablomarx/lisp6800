@@ -1,0 +1,8 @@
+(DEF GCD (LAMBDA (X Y)
+	(COND
+	((GREATER X Y) (GCD (SUB X Y) Y))
+	((GREATER Y X) (GCD X (SUB Y X)))
+	(T X)
+	)
+]
+

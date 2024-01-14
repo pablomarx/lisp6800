@@ -1,0 +1,18 @@
+
+(DEF DIM (NLAMBDA (D)
+	(SET	(CAR D)
+	(DIM-R (CAR (CDR D)) NIL)
+	)
+))
+
+(DEF DIM-R (LAMBDA (D NEWL)
+	(COND
+	((ZER D) NEWL)
+	(T (DIM-R (SUB D 1)
+	(CONS NOTHING NEWL)
+	)
+	)
+	)
+))
+
+

@@ -1,0 +1,17 @@
+
+(DEF SQRT (LAMBDA (X)
+	(SQR-R X 1)
+))
+
+(DEF SQR-R (LAMBDA (X Y)
+	(COND
+	((NULL X)0)
+	((NEG X)'"IMAG SQRT NUMBER")
+	((EQ X (MUL Y Y))Y)
+	((GREATER X (MUL Y Y))
+	(SQR-R X (ADD Y 1)))
+	(T (SUB Y 1))
+	)
+))
+
+

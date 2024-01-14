@@ -1,0 +1,106 @@
+
+(SET 'DEF (NLAMBDA (*L*)
+	(PROGN
+	(SET (CAR *L*) (EVAL (CAR (CDR *L*))) )
+	(CAR *L*)
+	)
+))
+
+(DEF SETQ (NLAMBDA (*L*)
+	(SET (CAR *L*) (EVAL (CAR (CDR *L*))) )
+))
+
+(DEF CADR (LAMBDA (X) (CAR (CDR X)) ))
+
+(DEF CDDR (LAMBDA (X) (CDR (CDR X)) ))
+
+(DEF NULL (LAMBDA (X) (EQ X NIL) ))
+
+(DEF DTPR (LAMBDA (X) (NULL (ATOM X)) ))
+
+(DEF PROGA (LAMBDA (X) X))
+
+(DEF MAPCAR (LAMBDA (*F* *L*)
+	(COND
+	((NULL *L*) NIL)
+	(T (CONS (*F* (CAR *L*)) (MAPCAR *F* (CDR *L*)) ))
+	)
+))
+
+(DEF MEMBER (LAMBDA (ELE L)
+	(COND
+	((NULL L) NIL)
+	((EQ ELE (CAR L)) T)
+	(T (MEMBER ELE (CDR L)))
+	)
+))
+
+(DEF REVERSE (LAMBDA (L)
+	(REV-R L NIL)
+))
+
+(DEF REV-R (LAMBDA (L NEWL)
+	(COND
+	((NULL L) NEWL)
+	(T (REV-R (CDR L) (CONS (CAR L) NEWL) ))
+	)
+))
+
+(DEF AND (NLAMBDA (*L*) (AND-R *L*) ))
+
+(DEF AND-R (LAMBDA (*L*)
+	(COND
+	((NULL *L*) T)
+	((EVAL (CAR *L*)) (AND-R (CDR *L*)) )
+	(T NIL)
+	)
+))
+
+(DEF OR (NLAMBDA (*L*) (OR-R *L*) ))
+
+(DEF OR-R (LAMBDA (*L*)
+	(COND
+	((NULL *L*) NIL)
+	((EVAL (CAR *L*)) T)
+	(T (OR-R (CDR *L*)) )
+	)
+))
+
+(DEF OPEN* OPEN)
+
+(DEF OPEN (LAMBDA (FILE)
+	(PROGA
+	(OPEN* FILE)
+	(OPEN* NIL)
+	)
+))
+
+(DEF READ* READ)
+
+(DEF READ (LAMBDA (FILE)
+	(COND
+	((NULL FILE) (READ*))
+	(T (OPEN* FILE)
+	(PROGA (READ*) (OPEN* NIL))
+	)
+	)
+))
+
+(DEF OPENO* OPENO)
+
+(DEF OPENO (LAMBDA (FILE)
+	(PROGA (OPENO* FILE) (OPENO* NIL) )
+))
+
+(DEF PRINT* PRINT)
+
+(DEF PRINT (LAMBDA (X FILE)
+	(COND
+	((NULL FILE) (PRINT* X))
+	(T (OPENO* FILE)
+	(PROGA (PRINT* X) (OPENO* NIL) )
+	)
+	)
+))
+
+

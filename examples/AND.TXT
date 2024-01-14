@@ -1,0 +1,11 @@
+(DEF AND (NLAMBDA (*L*)
+	(AND-R *L*) ))
+
+(DEF AND-R (LAMBDA (*L*)
+	(COND
+	((NULL *L*) T)
+	((EVAL (CAR *L*)) (AND-R (CDR *L*)) )
+	(T NIL)
+	)
+))
+

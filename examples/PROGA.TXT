@@ -1,0 +1,3 @@
+(DEF PROGA (LAMBDA (X)
+	X))
+

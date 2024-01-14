@@ -1,0 +1,3 @@
+(DEF CADR (LAMBDA (X)
+	(CAR (CDR X)) ))
+

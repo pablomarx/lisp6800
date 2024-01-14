@@ -1,0 +1,7 @@
+(DEF FACT (LAMBDA (X)
+	(COND
+	((GREATER 2 X) 1)
+	(T (MUL X (FACT (SUB X 1))))
+	)
+))
+

@@ -1,0 +1,8 @@
+(DEF MEMBER (LAMBDA (ELE L)
+	(COND
+	((NULL L) NIL)
+	((EQ ELE (CAR L)) T)
+	(T (MEMBER ELE (CDR L)))
+	)
+))
+

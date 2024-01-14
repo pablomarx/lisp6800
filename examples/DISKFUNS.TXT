@@ -1,0 +1,42 @@
+(DEF OPEN* OPEN)
+
+(DEF OPEN (LAMBDA (FILE)
+	(PROGA
+	(OPEN* FILE)
+	(OPEN* NIL)
+	)
+))
+
+(DEF READ* READ)
+
+(DEF READ (LAMBDA (FILE)
+	(COND
+	((NULL FILE) (READ*))
+	(T (OPEN* FILE)
+	(PROGA (READ*) (OPEN* NIL))
+	)
+	)
+))
+
+(DEF OPENO* OPENO)
+
+(DEF OPENO (LAMBDA (FILE)
+	(PROGA
+	(OPENO* FILE)
+	(OPENO* NIL) )
+))
+
+(DEF PRINT* PRINT)
+
+(DEF PRINT (LAMBDA (X FILE)
+	(COND
+	((NULL FILE) (PRINT* X))
+	(T (OPENO* FILE)
+	(PROGA
+		(PRINT* X)
+		(OPENO* NIL)
+	)
+	)
+	)
+))
+

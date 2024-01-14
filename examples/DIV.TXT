@@ -1,0 +1,19 @@
+
+(DEF DIV (LAMBDA (A B)
+	(COND
+	((NULL B) '"DIV ERROR")
+	((NEG A) (SUB 0 (DIV (SUB 0 A) B)))
+	((NEG B) (SUB 0 (DIV A (SUB 0 B))))
+	(T (DIV-R A B 0))
+	)
+))
+
+(DEF DIV-R (LAMBDA (A B Q)
+	(COND
+	((NULL A) Q)
+	((NEG A) (SUB Q 1))
+	(T (DIV-R (SUB A B) B (ADD Q 1)))
+	)
+))
+
+

@@ -1,0 +1,8 @@
+(DEF MUL (LAMBDA (A B)
+	(COND
+	((NEG A) (SUB 0 (MUL (SUB 0 A) B)))
+	((GREATER A B) (MUL B A))
+	((NULL A) 0)
+	(T (ADD B (MUL (SUB A 1) B)))]
+
+

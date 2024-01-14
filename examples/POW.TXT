@@ -1,0 +1,7 @@
+(DEF POW (LAMBDA (A B)
+	(COND
+	((NEG B) (LIST 'POW A B))
+	((NULL B) 1)
+	(T (MUL A (POW A (SUB B 1))))]
+
+

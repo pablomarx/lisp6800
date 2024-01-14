@@ -1,0 +1,6 @@
+(DEF ALLNUMS (LAMBDA (L)
+	(COND
+	((ATOM L) T)
+	((NUMBER (CAR L)) (ALLNUMS (CDR L)))
+	(T NIL)]
+

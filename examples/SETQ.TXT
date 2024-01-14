@@ -1,0 +1,5 @@
+(DEF SETQ (NLAMBDA (*L*)
+	(SET (CAR *L*) (EVAL (CAR (CDR *L*))
+	) )
+))
+

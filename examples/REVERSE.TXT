@@ -1,0 +1,13 @@
+(DEF REVERSE (LAMBDA (L)
+	(REV-R L NIL)
+))
+
+(DEF REV-R (LAMBDA (L NEWL)
+	(COND
+	((NULL L) NEWL)
+	(T (REV-R (CDR L)
+	(CONS
+		(CAR L) NEWL) ))
+	)
+))
+

@@ -1,0 +1,8 @@
+(DEF LENGTH (LAMBDA (L)
+	(COND
+	((NULL L) 0)
+	(T (ADD 1 (LENGTH (CDR L))))
+	)
+))
+
+

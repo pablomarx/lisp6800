@@ -1,0 +1,6 @@
+(DEF ALLEQ (LAMBDA (V L)
+	(COND
+	((ATOM L) T)
+	((EQ V (CAR L)) (ALLEQ V (CDR L)))
+	(T NIL)]
+

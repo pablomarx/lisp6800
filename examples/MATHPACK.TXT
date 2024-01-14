@@ -1,0 +1,71 @@
+(DEF GCD (LAMBDA (X Y)
+	(COND
+	((GREATER X Y) (GCD (SUB X Y) Y))
+	((GREATER Y X) (GCD X (SUB Y X)))
+	(T X)
+	)
+]
+(DEF FACT (LAMBDA (X)
+	(COND
+	((GREATER 2 X) 1)
+	(T (MUL X (FACT (SUB X 1))))
+	)
+))
+(DEF MUL (LAMBDA (A B)
+	(COND
+	((NEG A) (SUB 0 (MUL (SUB 0 A) B)))
+	((GREATER A B) (MUL B A))
+	((NULL A) 0)
+	(T (ADD B (MUL (SUB A 1) B)))]
+
+(DEF POW (LAMBDA (A B)
+	(COND
+	((NEG B) (LIST 'POW A B))
+	((NULL B) 1)
+	(T (MUL A (POW A (SUB B 1))))]
+
+
+(DEF DIV (LAMBDA (A B)
+	(COND
+	((NULL B) '"DIV ERROR")
+	((NEG A) (SUB 0 (DIV (SUB 0 A) B)))
+	((NEG B) (SUB 0 (DIV A (SUB 0 B))))
+	(T (DIV-R A B 0))
+	)
+))
+
+(DEF DIV-R (LAMBDA (A B Q)
+	(COND
+	((NULL A) Q)
+	((NEG A) (SUB Q 1))
+	(T (DIV-R (SUB A B) B (ADD Q 1)))
+	)
+))
+
+
+(DEF SQRT (LAMBDA (X)
+	(SQR-R X 1)
+))
+
+(DEF SQR-R (LAMBDA (X Y)
+	(COND
+	((NULL X)0)
+	((NEG X)'"IMAG SQRT NUMBER")
+	((EQ X (MUL Y Y))Y)
+	((GREATER X (MUL Y Y))
+	(SQR-R X (ADD Y 1)))
+	(T (SUB Y 1))
+	)
+))
+
+
+(DEF NULL (LAMBDA (A)
+	(EQ A 0)
+))
+
+
+(DEF NEG (LAMBDA (A)
+	(GREATER 0 A)
+))
+
+

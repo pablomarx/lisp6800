@@ -1,0 +1,3 @@
+(DEF CDDR (LAMBDA (X)
+	(CDR (CDR X)) ))
+

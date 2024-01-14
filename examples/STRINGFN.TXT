@@ -1,0 +1,91 @@
+(DEF CADR (LAMBDA (X)
+	(CAR (CDR X)) ))
+(DEF CDDR (LAMBDA (X)
+	(CDR (CDR X)) ))
+(DEF NULL (LAMBDA (X)
+	(EQ X NIL) ))
+(DEF DTPR (LAMBDA (X)
+	(NULL (ATOM X))
+))
+(DEF PROGA (LAMBDA (X)
+	X))
+(DEF MAPCAR (LAMBDA (*F* *L*)
+	(COND
+	((NULL *L*) NIL)
+	(T(CONS (*F* (CAR *L*))
+	(MAPCAR *F* (CDR *L*)) ))
+	)
+))
+(DEF MEMBER (LAMBDA (ELE L)
+	(COND
+	((NULL L) NIL)
+	((EQ ELE (CAR L)) T)
+	(T (MEMBER ELE (CDR L)))
+	)
+))
+(DEF REPLACE (LAMBDA (STRUC OLD NEW)
+	(COND
+	((EQ STRUC OLD)NEW)
+	((ATOM STRUC)STRUC)
+	(T(CONS
+	(REPLACE(CAR STRUC)OLD NEW)
+	(REPLACE(CDR STRUC)OLD NEW)
+)]
+(DEF CADDR (LAMBDA (X)
+	(CAR (CDR (CDR X)))
+))
+(DEF ALLEQ (LAMBDA (V L)
+	(COND
+	((ATOM L) T)
+	((EQ V (CAR L)) (ALLEQ V (CDR L)))
+	(T NIL)]
+(DEF LENGTH (LAMBDA (L)
+	(COND
+	((NULL L) 0)
+	(T (ADD 1 (LENGTH (CDR L))))
+	)
+))
+
+
+(DEF MIDSTR (LAMBDA (STR NUM)
+	(MIDSTR1 STR NUM (LENGTH STR))
+))
+
+(DEF MIDSTR1 (LAMBDA (STR NUM LEN)
+	(COND
+	((GREATER 1 LEN) NIL)
+	((GREATER NUM LEN) NIL)
+	(T (MIDSTR2 STR NUM))
+	)
+))
+
+(DEF MIDSTR2 (LAMBDA (STR NUM)
+	(COND
+	((EQ NUM 1) (CAR STR))
+	(T (MIDSTR2 (CDR STR) (SUB NUM 1)))
+	)
+))
+
+
+(DEF LAST (LAMBDA (STR)
+	(MIDSTR STR (LENGTH STR))
+))
+
+
+(DEF DIM (NLAMBDA (D)
+	(SET	(CAR D)
+	(DIM-R (CAR (CDR D)) NIL)
+	)
+))
+
+(DEF DIM-R (LAMBDA (D NEWL)
+	(COND
+	((NULL D) NEWL)
+	(T (DIM-R (SUB D 1)
+	(CONS NOTHING NEWL)
+	)
+	)
+	)
+))
+
+

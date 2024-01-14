@@ -1,0 +1,4 @@
+(DEF DTPR (LAMBDA (X)
+	(NULL (ATOM X))
+))
+

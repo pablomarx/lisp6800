@@ -1,0 +1,3 @@
+(DEF NULL (LAMBDA (X)
+	(EQ X NIL) ))
+

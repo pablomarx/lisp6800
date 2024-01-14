@@ -1,0 +1,7 @@
+(SET 'DEF (NLAMBDA(*L*)
+	(PROGN
+	(SET (CAR *L*) (EVAL (CAR (CDR *L*))) )
+	(CAR *L*)
+	)
+))
+

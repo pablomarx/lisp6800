@@ -1,0 +1,4 @@
+(DEF CADDR (LAMBDA (X)
+	(CAR (CDR (CDR X)))
+))
+

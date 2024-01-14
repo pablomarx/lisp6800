@@ -1,0 +1,6 @@
+
+(DEF NEG (LAMBDA (A)
+	(GREATER 0 A)
+))
+
+

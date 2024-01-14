@@ -1,0 +1,8 @@
+(DEF MAPCAR (LAMBDA (*F* *L*)
+	(COND
+	((NULL *L*) NIL)
+	(T(CONS (*F* (CAR *L*))
+	(MAPCAR *F* (CDR *L*)) ))
+	)
+))
+

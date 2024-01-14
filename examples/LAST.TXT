@@ -1,0 +1,6 @@
+
+(DEF LAST (LAMBDA (STR)
+	(MIDSTR STR (LENGTH STR))
+))
+
+
