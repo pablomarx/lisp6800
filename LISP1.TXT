@@ -248,8 +248,8 @@ GSBRK  TSTB                     * HAVE WE GOT A SYMBOL?
        CMPA #'"                 * QUOTED STRING?
        BEQ GSQSTR               * YES, GO COPY REST OF STRING
        LDAB #2                  * NOPE, SET BREAK-CHAR CODE
-       ENDNPK CLRA              * END SYM WITH NO PEEKC
-       ENDSYM STAA PEEKC        * SAVE PEEKC
+ENDNPK CLRA                     * END SYM WITH NO PEEKC
+ENDSYM STAA PEEKC               * SAVE PEEKC
        CLRA                     * FINISH UP SYMBOL
        BSR COPYC
        LDX SYMPTR               * LOOKUP ON SYMLIST

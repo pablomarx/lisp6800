@@ -375,7 +375,7 @@ PTCDSK PSHB             * SAVE B, X-REG
        TST 0,X          * OPEN FOR WRITING?
        BNE PTCDE2
        LDAB 2,X
-CMPB   #2
+       CMPB #2
        BNE PTCDE2
        BSR CASWIT       * UPPER<-->LOWER CASE
        JSR DOSFMS       * OUT GOES THE BYTE

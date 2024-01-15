@@ -246,7 +246,7 @@ GCF1   CPX GCTEMP               * IS THIS A STACK PAGE?
 GCF3   CPX ENDMEM               * REACHED END OF MEM?
        BEQ GCFDUN
        LDAA CDR+1,X             * IS THIS CELL MARKED?
-BITA   #MRKBIT
+       BITA #MRKBIT
        BNE GCFCLR
        BSR FRECEL               * NO, FREE UP CELL
        INC GCFREE+1             * INCREMENT FREE CELL COUNTER
@@ -257,7 +257,7 @@ BITA   #MRKBIT
 GCFCLR EORA #MRKBIT             * CLEAR MARK BIT
        STAA CDR+1,X
        LDAA CAR+1,X
-EORA   #MRKBIT
+       EORA #MRKBIT
        STAA CAR+1,X
 GCFINX INX
        INX
